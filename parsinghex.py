@@ -2,6 +2,9 @@
 # Parsing Hex
 # Gregory Neagu
 # May 21, 2018
+#
+# Code takes input till end of file, and searches for and then returns the hex numbers as are
+# (in terms of capitalization), as well as the base 10 values of the hex.
 ###########################################################
 import sys
 
