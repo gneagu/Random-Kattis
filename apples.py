@@ -11,10 +11,7 @@ graph= {}
 R = int(R)
 C = int(C)
 
-print("")
-
 for r in range(R):
-    # print("R", R, "C", C)
     line = sys.stdin.readline()
 
     for c in range(C):
@@ -23,10 +20,9 @@ for r in range(R):
         except:
             graph[c] = [line[c]]
 
-print(graph)
+# print(graph)
 
 for c in range(C):
-    # print( "C")
     blockade = R
     currentPoint = 0
 
@@ -35,28 +31,26 @@ for c in range(C):
     #     if graph[c][r] == '#':
     #         blockade = r
     #     elif graph[c][r] == 'a':
-    #         tempPointer = graph[c][blockade + 1]*
-    #         graph[c][blockade + 1]* = graph[c][r]*
+    #         tempPointer = graph[c][blockade - 1]*
+    #         graph[c][blockade - 1]* = graph[c][r]*
     #         graph[c][r]* = tempPointer
     #         tempPointer = 0
+    #         blockade -= 1
 
     for r in range(R - 1, -1, -1):
-        print(c, r)
         if graph[c][r] == '#':
             blockade = r
         elif graph[c][r] == 'a':
-            # currentPoint = c
             tempVal = graph[c][blockade - 1]
             graph[c][blockade - 1] = graph[c][r]
             graph[c][r] = tempVal
             tempPointer = 0
+            blockade -= 1
 
-#S
+for r in range(R):
+    line = ""
 
+    for c in range(C):
+        line += graph[c][r]
 
-
-
-
-
-
-print(graph)
+    print(line)
