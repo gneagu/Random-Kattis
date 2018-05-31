@@ -8,7 +8,15 @@ def createWindow():
     window.title("Test Application v0.0.1")
     window.geometry('300x150')
 
+    filePath = ""
     buttonState = []
+
+    def saveButtonStates():
+        #Save state of buttons, then disable them.
+        global buttonState
+        buttonState = []
+        buttonState += [loadPro["state"]] + [testPro["state"]] + [loadCustomTest["state"]] + [createTest["state"]]
+
 
     def disableRootWindow():
         createTest.config(state = "disabled")
@@ -23,72 +31,84 @@ def createWindow():
         testPro.config(state = buttonStates[1])
 
     def loadProgram():
+        global filePath
         disableRootWindow()
         loadPro.config(state = "normal")
 
-        fileLocation = filedialog.askopenfilenames()
-        nameList = str(fileLocation[0]).split("/")
-        fileName = nameList[-1]
+        try:
+            fileLocation = filedialog.askopenfilenames()
+            nameList = str(fileLocation[0]).split("/")
+            fileName = nameList[-1]
 
-        lbl3.configure(text = fileName)
+            lbl3.configure(text = fileName)
 
-        fileNameLength = len(fileName)
-        path = str(fileLocation[0])
-        path = path[:-fileNameLength]
+            fileNameLength = len(fileName)
+            path = str(fileLocation[0])
+            path = path[:-fileNameLength]
 
-        tempTestFileName = fileName.split(".")
+            tempTestFileName = fileName.split(".")
 
-        testFilePath = Path(path + tempTestFileName[0] + "_test.py")
+            testFilePath = Path(path + tempTestFileName[0] + "_test.py")
+            filePath = testFilePath
 
-        print(testFilePath)
-
-        if testFilePath.is_file():
-            print("Test File, {}, Exists".format(tempTestFileName[0] + "_test.py"))
-            lbl4.config(text = "Yes ({})".format(tempTestFileName[0] + "_test.py"))
-            testPro.config(state = "normal")
-        else:
-            print("Test File, {}, Does Not Exist".format(tempTestFileName[0] + "_test.py"))
-            createTest.config(state = "normal")
+            print(testFilePath)
             loadCustomTest.config(state = "normal")
+
+            if testFilePath.is_file():
+                print("Test File, {}, Exists".format(tempTestFileName[0] + "_test.py"))
+                lbl4.config(text = "Yes ({})".format(tempTestFileName[0] + "_test.py"))
+                testPro.config(state = "normal")
+            else:
+                print("Test File, {}, Does Not Exist".format(tempTestFileName[0] + "_test.py"))
+                createTest.config(state = "normal")
+                # loadCustomTest.config(state = "normal")
+        except:
+            pass
 
     def createTest():
         print("Type in the contents of the test file.")
 
         def getInput():
+            global filePath
             global buttonState
             lines = textBox.get("1.0", "end-1c")
             print(lines)
             childWindow.destroy()
             enaleRootWindow(buttonState)
+            testPro.config(state = "normal")
+
+            print(filePath)
+
+            with open("/home/cmput274/Random-Kattis/train_test_test.txt", mode = 'w') as the_file:
+                for i in lines:
+                    the_file.write(i)
+
 
         def disableEvent():
             global buttonState
             enaleRootWindow(buttonState)
             childWindow.destroy()
 
-        #Save state of buttons, then disable them.
-        global buttonState
-        buttonState = []
-        buttonState += [loadPro["state"]] + [testPro["state"]] + [loadCustomTest["state"]] + [createTest["state"]]
-
+        saveButtonStates()
         disableRootWindow()
 
         childWindow = Tk()
         childWindow.title("Insert Test Cases")
-        childWindow.geometry('400x500')
+        childWindow.geometry('400x380')
 
         # loadCustomTest.grid(column=1, row=1)
 
         textBox = Text(childWindow, height = 20 , width = 50)
         textBox.pack()
-        textBox.insert(END, "Insert Text Here")
+        textBox.insert(END, "Insert Test Cases Here. \nPreceed test cases with 'Test Case:' \n \
+        and \nPreceed Answers with 'Answer:'")
 
         destroyButton = Button(childWindow, text = "Submit Text", command = getInput, width = 15)
         destroyButton.pack()
 
         childWindow.protocol("WM_DELETE_WINDOW", disableEvent)
 
-        print(buttonState)
+        # print(buttonState)
 
     lbl1 = Label(window, text="Program Name: ", width = 15)
     lbl1.grid(column=0, row=2)
