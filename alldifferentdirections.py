@@ -6,10 +6,8 @@ import math #math.radians
 
 while True:
     testCases = int(sys.stdin.readline())
-    # coordinate_dict = {}
     coordinate_list_x = []
     coordinate_list_y = []
-
 
     if testCases!= 0:
         for i in range(testCases):
@@ -27,36 +25,28 @@ while True:
 
                 if command == "walk":
                     rad_angle = math.radians(angle_degree)
-                    # print(rad_angle, type(rad_angle))
                     x_change = math.cos(rad_angle) * value
                     y_change = math.sin(rad_angle) * value
-                    # print(x_change, y_change)
                     startingX += x_change
                     startingY += y_change
-                    # print("new position", startingX, startingY)
-
                 elif command == "turn":
                     angle_degree = angle_degree + value
-            # print("End point", startingX, startingY)
+
             coordinate_list_x.append(startingX)
             coordinate_list_y.append(startingY)
         
         totalX = sum(coordinate_list_x)
         totalY = sum(coordinate_list_y)
-
         averageX = totalX / testCases
         averageY = totalY / testCases
-
         worstDistance = 0
 
         for i in range(testCases):
-            
+            distance = math.sqrt(pow(coordinate_list_x[i] - averageX,2) + pow(coordinate_list_y[i] - averageY,2))
+            if worstDistance < distance:
+                worstDistance = distance
 
-        print(averageX, averageY)
-
-
-
-        
-                
+        print(averageX, averageY, worstDistance)
+                    
     else:
         break
