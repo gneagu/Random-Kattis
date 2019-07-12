@@ -6,9 +6,12 @@
 import sys
 import io
 
-garbage_collection = sys.stdin.readline()
-first_word = list(sys.stdin.readline()[:-1])[::-1]
+garbage_collection = sys.stdin.readline().split()
+first_word = list(sys.stdin.readline()[:-1])
 second_word = list(sys.stdin.readline()[:-1])
+
+first_word = first_word[:int(garbage_collection[0])][::-1]
+second_word = second_word[:int(garbage_collection[1])]
 
 letter_list = {}
 
@@ -22,7 +25,7 @@ for i in range(1, len(first_word) + 1):
 
 final_string = ""
 
-for i in letter_list.values():
-    final_string+= i
+for a,b in sorted(letter_list.items()):
+    final_string+= str(b)
 
 print(final_string.upper())
